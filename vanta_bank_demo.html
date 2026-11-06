@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#090d12">
+<title>VANTA BANK — Demo</title>
+<style>
+:root{--bg:#090d12;--panel:#121922;--panel2:#18222d;--text:#f4f7fa;--muted:#8b98a7;--green:#80e0b2;--line:#263340;--red:#ff8d8d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:22px 17px 35px}
+.wrap{max-width:480px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin:8px 2px 25px}.brand{font-size:17px;font-weight:850;letter-spacing:3px}.demo{font-size:10px;letter-spacing:1.4px;color:var(--green);border:1px solid #315b4b;border-radius:20px;padding:7px 10px}
+.greeting{color:var(--muted);font-size:13px}.name{font-size:24px;font-weight:750;margin:5px 0 18px}
+.balance{background:linear-gradient(135deg,#1d3435,#14242d 58%,#202b3b);border:1px solid #35514e;border-radius:23px;padding:22px;position:relative;overflow:hidden}
+.balance:after{content:"";position:absolute;width:190px;height:190px;border:1px solid #ffffff12;border-radius:50%;right:-75px;top:-75px;box-shadow:0 0 0 25px #ffffff08,0 0 0 50px #ffffff05}
+.small{font-size:12px;color:#c0d0cf}.amount{font-size:36px;font-weight:800;letter-spacing:-1px;margin:9px 0 17px}.cardrow{display:flex;justify-content:space-between;align-items:end}.cardno{font-size:12px;letter-spacing:2px;color:#d5e0de}.chip{width:36px;height:26px;border:1px solid #c3d0bd;border-radius:6px;background:linear-gradient(135deg,#c6cda9,#687d71)}
+.actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 24px}.action{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:14px 4px;text-align:center;color:var(--text);font-size:11px}.action b{display:block;font-size:20px;margin-bottom:7px;color:var(--green);font-weight:500}
+.section{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}.section strong{font-size:16px}.section span{font-size:11px;color:var(--muted)}
+.account{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:16px;display:flex;justify-content:space-between;align-items:center}.account small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.account strong{font-size:14px;letter-spacing:1px}.copy{background:var(--panel2);border:0;color:var(--green);padding:9px 12px;border-radius:10px}
+.txns{background:var(--panel);border:1px solid var(--line);border-radius:17px;overflow:hidden}.txn{display:flex;align-items:center;gap:12px;padding:14px;border-bottom:1px solid var(--line)}.txn:last-child{border:0}.bubble{width:38px;height:38px;border-radius:13px;background:var(--panel2);display:grid;place-items:center;font-size:17px}.desc{flex:1}.desc b{font-size:13px;display:block}.desc small{font-size:11px;color:var(--muted)}.money{font-size:13px;font-weight:700}.positive{color:var(--green)}.negative{color:var(--text)}
+button{font:inherit;cursor:pointer}.primary{width:100%;padding:14px;border:0;border-radius:13px;background:var(--green);color:#092016;font-weight:800;margin-top:12px}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line);padding:12px;border-radius:12px}
+.modal{display:none;position:fixed;inset:0;background:#000b;align-items:end;justify-content:center;padding:15px}.modal.show{display:flex}.sheet{background:#111923;border:1px solid var(--line);border-radius:22px 22px 18px 18px;padding:22px;width:100%;max-width:450px}.sheet h2{margin:0 0 6px}.sheet p{color:var(--muted);font-size:12px;margin:0 0 18px}.sheet label{display:block;color:var(--muted);font-size:12px;margin:12px 0 6px}.sheet input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:#0b1118;color:white;font-size:16px;outline:none}.buttons{display:flex;gap:9px;margin-top:14px}.buttons button{flex:1}.foot{text-align:center;color:#647181;font-size:10px;line-height:1.6;margin:22px 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="top"><div class="brand">VANTA BANK</div><div class="demo">FICTIONAL DEMO</div></div>
+ <div class="greeting">Good day,</div><div class="name" id="username">Jonathan</div>
+ <div class="balance">
+  <div class="small">TOTAL DEMO BALANCE</div>
+  <div class="amount" id="balance">$12,450.00</div>
+  <div class="cardrow"><div class="cardno">VANTA&nbsp; •••• &nbsp;4829</div><div class="chip"></div></div>
+ </div>
+ <div class="actions">
+  <button class="action" onclick="openModal('send')"><b>↗</b>Send</button>
+  <button class="action" onclick="openModal('add')"><b>＋</b>Add</button>
+  <button class="action" onclick="openModal('request')"><b>↓</b>Request</button>
+  <button class="action" onclick="openModal('edit')"><b>⚙</b>Settings</button>
+ </div>
+ <div class="section"><strong>Account details</strong><span>DEMO ACCOUNT</span></div>
+ <div class="account"><div><small>Account number</small><strong id="account">2048 7319 5820</strong></div><button class="copy" onclick="copyAccount()">Copy</button></div>
+ <div class="section"><strong>Recent activity</strong><span id="count">3 TRANSACTIONS</span></div>
+ <div class="txns" id="transactions">
+  <div class="txn"><div class="bubble">🛍</div><div class="desc"><b>Shopping</b><small>Today · Demo transaction</small></div><div class="money negative">−$84.00</div></div>
+  <div class="txn"><div class="bubble">↙</div><div class="desc"><b>Money received</b><small>Yesterday · Demo transaction</small></div><div class="money positive">+$250.00</div></div>
+  <div class="txn"><div class="bubble">☕</div><div class="desc"><b>Coffee shop</b><small>Nov 4 · Demo transaction</small></div><div class="money negative">−$6.50</div></div>
+ </div>
+ <div class="foot">VANTA BANK IS A FICTIONAL PERSONAL SIMULATOR<br>NO REAL BANKING · NO REAL PAYMENTS · NO REAL ACCOUNT</div>
+</div>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+ <div class="sheet">
+  <h2 id="modalTitle">Send money</h2><p id="modalInfo">This only changes your pretend balance.</p>
+  <div id="recipientWrap"><label>Recipient / note</label><input id="recipient" placeholder="e.g. Alex"></div>
+  <label>Amount (USD)</label><input id="amountInput" type="number" min="0.01" step="0.01" placeholder="0.00">
+  <div class="buttons"><button class="secondary" onclick="closeModal()">Cancel</button><button class="primary" style="margin:0" onclick="submitAction()">Confirm</button></div>
+ </div>
+</div>
+<script>
+let balance=12450;
+let mode='send';
+let historyItems=[
+ {icon:'🛍',name:'Shopping',date:'Today · Demo transaction',amount:-84},
+ {icon:'↙',name:'Money received',date:'Yesterday · Demo transaction',amount:250},
+ {icon:'☕',name:'Coffee shop',date:'Nov 4 · Demo transaction',amount:-6.5}
+];
+function money(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function render(){
+ document.getElementById('balance').textContent=money(balance);
+ document.getElementById('count').textContent=historyItems.length+' TRANSACTIONS';
+ document.getElementById('transactions').innerHTML=historyItems.map(t=>`<div class="txn"><div class="bubble">${t.icon}</div><div class="desc"><b>${escapeText(t.name)}</b><small>${t.date}</small></div><div class="money ${t.amount>0?'positive':'negative'}">${t.amount>0?'+':'−'}${money(Math.abs(t.amount))}</div></div>`).join('');
+}
+function escapeText(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function openModal(m){
+ mode=m;document.getElementById('modal').classList.add('show');
+ const titles={send:'Send pretend money',add:'Add pretend money',request:'Receive pretend money',edit:'Personalize your demo'};
+ document.getElementById('modalTitle').textContent=titles[m];
+ document.getElementById('modalInfo').textContent=m==='edit'?'Change the display name on your demo card.': 'This is only a simulation. No real payment happens.';
+ document.getElementById('recipientWrap').style.display=m==='edit'?'block':'block';
+ document.querySelector('#recipientWrap label').textContent=m==='edit'?'Display name':'Recipient / note';
+ document.getElementById('recipient').placeholder=m==='edit'?'Your display name':'e.g. Alex';
+ document.getElementById('amountInput').style.display=m==='edit'?'none':'block';
+ document.querySelector('label[for="amountInput"]');
+ document.getElementById('amountInput').value='';
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function submitAction(){
+ const who=document.getElementById('recipient').value.trim();
+ if(mode==='edit'){
+  if(who)document.getElementById('username').textContent=who.slice(0,28);
+  closeModal();return;
+ }
+ const amount=Number(document.getElementById('amountInput').value);
+ if(!Number.isFinite(amount)||amount<=0||amount>1000000){alert('Enter a valid demo amount.');return}
+ if(mode==='send'&&amount>balance){alert('Not enough demo funds.');return}
+ const add=mode==='add'||mode==='request';
+ balance+=add?amount:-amount;
+ historyItems.unshift({icon:add?'↙':'↗',name:(mode==='send'?'Sent to ':mode==='request'?'Received from ':'Added funds · ')+(who||'Demo'),date:'Just now · Demo transaction',amount:add?amount:-amount});
+ render();closeModal();
+}
+function copyAccount(){const t=document.getElementById('account').textContent;if(navigator.clipboard?.writeText){navigator.clipboard.writeText(t).then(()=>alert('Demo account number copied.')).catch(()=>alert(t))}else alert(t)}
+render();
+</script>
+</body></html>
